@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Mpila Legacy Logistics</title>
 
+    <link rel="icon" type="image/png" href="WhatsApp Image 2026-06-29 at 17.41.11_upscaled (1).png">
+    <link rel="apple-touch-icon" href="WhatsApp Image 2026-06-29 at 17.41.11_upscaled (1).png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -40,8 +43,9 @@
             --font-main: 'Montserrat', 'Inter', sans-serif;
         }
 
+        /* Smooth scrolling for the single-page layout */
         html, body {
-            scroll-behavior: smooth;
+            scroll-behavior: smooth; 
             max-width: 100vw;
             overflow-x: hidden;
         }
@@ -489,69 +493,3 @@
                     <h4>Connect With Us</h4>
                     <div class="social-icons-footer">
                         <a href="#" class="social-link"><i class="fab fa-facebook-f"></i> Mpila Legacy Logistics</a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i> Mpila Legacy Logistics</a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i> Mpila Legacy Logistics</a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                &copy; 2026 Mpila Legacy Logistics. All Rights Reserved.
-            </div>
-        </div>
-    </footer>
-
-    <a href="https://wa.me/27734053920" target="_blank" class="float-wa">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <script>
-        // Mobile Menu Toggle
-        const mobileBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
-        
-        mobileBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-
-        // Simple Hero Slider
-        const slidesContainer = document.getElementById('slidesContainer');
-        const dots = document.querySelectorAll('.dot');
-        let currentSlide = 0;
-
-        function goToSlide(index) {
-            currentSlide = index;
-            slidesContainer.style.transform = `translateX(-${currentSlide * 33.333}%)`;
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
-            });
-        }
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-            });
-        });
-
-        setInterval(() => {
-            let next = currentSlide + 1;
-            if (next >= 3) next = 0;
-            goToSlide(next);
-        }, 5000);
-
-        // FAQ Accordion
-        const faqQuestions = document.querySelectorAll('.faq-question');
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                item.classList.toggle('active');
-                const icon = question.querySelector('i');
-                if (item.classList.contains('active')) {
-                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                } else {
-                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                }
-            });
-        });
-    </script>
-</body>
-</html>
