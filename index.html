@@ -53,19 +53,6 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
-        
-        /* Floating Background Truck */
-        .floating-truck-bg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85vw;
-            max-width: 900px;
-            opacity: 0.07; /* Very subtle so it doesn't block text */
-            z-index: -1;
-            pointer-events: none; /* Ensures users can still click links/buttons over it */
-        }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; width: 100%; }
 
@@ -115,20 +102,17 @@
 
         /* About Section */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        .about-image img { width: 100%; border-radius: 0; object-fit: cover; aspect-ratio: 1/1; box-shadow: var(--card-shadow); }
+        .about-image img { width: 100%; border-radius: var(--radius-lg); object-fit: cover; aspect-ratio: 4/3; box-shadow: var(--card-shadow); }
         .about-text h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-transform: uppercase; color: var(--black); }
         .about-text h2 span { color: var(--primary); }
 
         /* Services Section */
-        .services-section { background: rgba(243, 244, 246, 0.85); }
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .services-section { background: var(--bg-secondary); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
         .service-card { background: var(--card-bg); padding: 2.5rem 2rem; border-radius: var(--radius-md); text-align: center; box-shadow: var(--card-shadow); border: 1px solid var(--card-border); transition: var(--transition); border-bottom: 4px solid transparent; }
         .service-card:hover { transform: translateY(-5px); border-bottom-color: var(--primary); box-shadow: var(--card-shadow-hover); }
-        .service-card i.main-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1.5rem; display: block; }
+        .service-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 1.5rem; }
         .service-card h3 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--black); text-transform: uppercase; }
-        .service-list { list-style: none; padding: 0; text-align: left; margin-top: 15px; color: var(--text-secondary); }
-        .service-list li { margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px; }
-        .service-list li i { color: var(--primary); font-size: 1rem; margin-bottom: 0; }
 
         /* Locations */
         .locations-section { padding-top: 2rem; }
@@ -149,7 +133,7 @@
         .insurance-box p { font-size: 1.05rem; line-height: 1.8; color: #E0E0E0; }
 
         /* Quote / Contact Form */
-        .quote-section { background: rgba(243, 244, 246, 0.85); }
+        .quote-section { background: var(--bg-secondary); }
         .quote-container { background: var(--white); max-width: 800px; margin: 0 auto; padding: 3rem; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); border-top: 5px solid var(--primary); }
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--black); }
@@ -187,23 +171,41 @@
         .float-wa { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; transition: transform 0.3s; text-decoration: none; }
         .float-wa:hover { transform: scale(1.1); color: white; }
 
+        /* =========================================================
+           RESPONSIVE FIXES (Tablets & Mobile) 
+           ========================================================= */
         @media (max-width: 992px) {
             .about-grid, .info-grid { grid-template-columns: 1fr; }
             .slide-content h1 { font-size: 2.5rem; }
         }
+
         @media (max-width: 768px) {
             .mobile-menu-btn { display: block; }
             .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); flex-direction: column; padding: 2rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
             .nav-links.active { display: flex; }
-            .city-grid { grid-template-columns: repeat(3, 1fr); }
             .quote-container { padding: 2rem 1.5rem; }
+            /* Tablets: Keep locations slightly wider */
+            .city-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        }
+
+        /* Smartphone Specific Adjustments */
+        @media (max-width: 576px) {
+            .section-padding { padding: 3rem 0; }
+            .slide-content h1 { font-size: 2rem; }
+            .about-text h2 { font-size: 2rem; }
+            
+            /* Ensures Services are perfectly stacked and even on phones */
+            .services-grid { grid-template-columns: 1fr; } 
+            
+            /* Ensures Locations are a balanced 2-column grid instead of 3 squished ones */
+            .city-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; } 
+            
+            .insurance-box { padding: 1.5rem; }
+            .float-wa { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
-
-    <!-- Floating Background Truck Image -->
-    <img src="craiyon_104232_image.png" alt="Floating Truck" class="floating-truck-bg">
 
     <header class="main-nav">
         <div class="container nav-container">
@@ -261,7 +263,7 @@
     <section id="about" class="section-padding">
         <div class="container about-grid">
             <div class="about-image">
-                <img src="WhatsApp Image 2026-06-30 at 01.33.47.jpeg" alt="Mpila Legacy Logistics Team">
+                <img src="https://images.pexels.com/photos/7464700/pexels-photo-7464700.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mpila Legacy Logistics Team">
             </div>
             <div class="about-text">
                 <h2>Welcome to <span>Mpila Legacy</span> Logistics</h2>
@@ -281,46 +283,32 @@
             
             <div class="services-grid">
                 <div class="service-card">
-                    <i class="fas fa-truck-loading main-icon"></i>
+                    <i class="fas fa-truck-loading"></i>
                     <h3>Removal Services</h3>
-                    <ul class="service-list">
-                        <li><i class="fas fa-check-circle"></i> Packaging and handling</li>
-                        <li><i class="fas fa-check-circle"></i> Loading and offloading</li>
-                        <li><i class="fas fa-check-circle"></i> Wrapping services</li>
-                    </ul>
+                    <p>Comprehensive handling and moving of your goods with maximum care.</p>
                 </div>
                 <div class="service-card">
-                    <i class="fas fa-box-open main-icon"></i>
-                    <h3>Packaging and Handling</h3>
-                    <p>Professional packing and careful handling of your items to ensure safe transit.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-people-carry main-icon"></i>
-                    <h3>Loading and Offloading</h3>
-                    <p>Expert loading and offloading services to protect your belongings at both ends of the journey.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-home main-icon"></i>
+                    <i class="fas fa-home"></i>
                     <h3>Residential</h3>
                     <p>Stress-free home relocation services for you and your family.</p>
                 </div>
                 <div class="service-card">
-                    <i class="fas fa-building main-icon"></i>
+                    <i class="fas fa-building"></i>
                     <h3>Office</h3>
                     <p>Efficient corporate moves designed to minimize your business downtime.</p>
                 </div>
                 <div class="service-card">
-                    <i class="fas fa-route main-icon"></i>
+                    <i class="fas fa-route"></i>
                     <h3>Short and Long Distance</h3>
                     <p>Reliable transportation across cities and provinces nationwide.</p>
                 </div>
                 <div class="service-card">
-                    <i class="fas fa-warehouse main-icon"></i>
+                    <i class="fas fa-warehouse"></i>
                     <h3>Storage Facilities</h3>
                     <p>Safe, secure, and accessible storage spaces for short or long-term needs.</p>
                 </div>
                 <div class="service-card">
-                    <i class="fas fa-truck-pickup main-icon"></i>
+                    <i class="fas fa-truck-pickup"></i>
                     <h3>Small Vehicle Towing</h3>
                     <p>Dependable towing services for small vehicles whenever you need assistance.</p>
                 </div>
@@ -409,22 +397,26 @@
             <div class="title-underline"></div>
             
             <div class="quote-container">
-                <form id="quoteForm">
+                <form action="https://api.web3forms.com/submit" method="POST">
+                    
+                    <input type="hidden" name="access_key" value="978fe415-d32e-4d18-80c6-719eaa19d1c2">
+                    <input type="hidden" name="subject" value="New Quote Request from Mpila Legacy Logistics">
+
                     <div class="form-group">
                         <label for="qName">Full Name</label>
-                        <input type="text" id="qName" class="form-control" required placeholder="Enter your full name">
+                        <input type="text" id="qName" name="name" class="form-control" required placeholder="Enter your full name">
                     </div>
                     <div class="form-group">
                         <label for="qEmail">Email Address</label>
-                        <input type="email" id="qEmail" class="form-control" required placeholder="Enter your email address">
+                        <input type="email" id="qEmail" name="email" class="form-control" required placeholder="Enter your email address">
                     </div>
                     <div class="form-group">
                         <label for="qPhone">Phone Number</label>
-                        <input type="tel" id="qPhone" class="form-control" required placeholder="Enter your phone number">
+                        <input type="tel" id="qPhone" name="phone" class="form-control" required placeholder="Enter your phone number">
                     </div>
                     <div class="form-group">
                         <label for="qService">Service Required</label>
-                        <select id="qService" class="form-control" required>
+                        <select id="qService" name="service_type" class="form-control" required>
                             <option value="">Select a service</option>
                             <option value="Removal Services">Removal Services</option>
                             <option value="Residential Move">Residential Move</option>
@@ -436,9 +428,9 @@
                     </div>
                     <div class="form-group">
                         <label for="qDetails">Pickup & Drop-off Details (or Message)</label>
-                        <textarea id="qDetails" class="form-control" required placeholder="Provide pickup city, drop-off city, and inventory summary..."></textarea>
+                        <textarea id="qDetails" name="message" class="form-control" required placeholder="Provide pickup city, drop-off city, and inventory summary..."></textarea>
                     </div>
-                    <button type="submit" class="btn-submit">Send Request via Email & WhatsApp</button>
+                    <button type="submit" class="btn-submit">Submit Request</button>
                 </form>
             </div>
         </div>
@@ -478,14 +470,6 @@
         </div>
     </section>
 
-    <!-- Location Map Embed -->
-    <div class="container" style="margin-bottom: 4rem;">
-        <h4 style="color: var(--black); font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; text-transform: uppercase; text-align: center;">Our Location</h4>
-        <div style="width: 100%; height: 350px; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--card-shadow); border: 1px solid var(--card-border);">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3310.223846614138!2d27.915729!3d-33.00318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e66e04313fb38e9%3A0xc3b44b82d966d5b9!2s47%20Conway%20Rd%2C%20Berea%2C%20East%20London%2C%205214%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1716920000000!5m2!1sen!2sza" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-    </div>
-
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -506,6 +490,7 @@
                     <div class="social-icons-footer">
                         <a href="#" class="social-link"><i class="fab fa-facebook-f"></i> Mpila Legacy Logistics</a>
                         <a href="#" class="social-link"><i class="fab fa-instagram"></i> Mpila Legacy Logistics</a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i> Mpila Legacy Logistics</a>
                     </div>
                 </div>
             </div>
@@ -515,7 +500,6 @@
         </div>
     </footer>
 
-    <!-- Floating WhatsApp Link -->
     <a href="https://wa.me/27734053920" target="_blank" class="float-wa">
         <i class="fab fa-whatsapp"></i>
     </a>
@@ -567,28 +551,6 @@
                     icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
                 }
             });
-        });
-
-        // Form Submit Handler (Dual action: WhatsApp and Email)
-        const quoteForm = document.getElementById('quoteForm');
-        quoteForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('qName').value;
-            const email = document.getElementById('qEmail').value;
-            const phone = document.getElementById('qPhone').value;
-            const service = document.getElementById('qService').value;
-            const details = document.getElementById('qDetails').value;
-
-            const textBody = `New Quote Request%0A%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}%0AService Required: ${service}%0ADetails: ${details}`;
-
-            const waLink = `https://wa.me/27734053920?text=${textBody}`;
-            const mailtoLink = `mailto:info@mpilalegacylogistics.co.za?subject=Quote Request - ${name}&body=${textBody}`;
-
-            window.open(waLink, '_blank');
-            window.location.href = mailtoLink;
-            
-            quoteForm.reset();
         });
     </script>
 </body>
