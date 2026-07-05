@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Mpila Legacy Logistics</title>
+
+    <link rel="icon" type="image/png" href="WhatsApp Image 2026-06-29 at 17.41.11_upscaled (1).png">
+    <link rel="apple-touch-icon" href="WhatsApp Image 2026-06-29 at 17.41.11_upscaled (1).png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // REPLACE "YOUR_PUBLIC_KEY" WITH YOUR ACTUAL PUBLIC KEY FROM EMAILJS
+            emailjs.init({
+              publicKey: "YOUR_PUBLIC_KEY", 
+            });
+        })();
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FFCC00;
+            --primary-hover: #E6B800;
+            --black: #000000;
+            --dark-gray: #1A1A1A;
+            --white: #FFFFFF;
+            --bg-color: #FAFAFA;
+            --bg-secondary: #F3F4F6;
+            --text-color: #1A1A1A;
+            --text-secondary: #5A5F6B;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --nav-border: rgba(0, 0, 0, 0.08);
+            --card-bg: #FFFFFF;
+            --card-border: rgba(0, 0, 0, 0.06);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --font-main: 'Montserrat', 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
+
+        /* SPA Page Logic */
+        .page-section {
+            display: none; /* Hide all sections by default */
+            animation: fadeIn 0.4s ease-in-out;
+            flex-grow: 1;
+        }
+        .page-section.active-page {
+            display: block; /* Only show active page */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: var(--nav-bg);
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--nav-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .nav-container { display: flex; align-items: center; justify-content: space-between; }
+        .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+        .logo-img { width: 50px; height: 50px; object-fit: contain; border-radius: 8px; }
+        .logo-text { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; line-height: 1.1; color: var(--black); }
+        .logo-text .highlight { color: var(--primary); display: block; font-size: 1.2rem; }
+
+        .nav-links { display: flex; align-items: center; gap: 1.5rem; font-weight: 600; font-size: 0.9rem; }
+        .nav-links a { text-decoration: none; color: var(--black); transition: var(--transition); cursor: pointer; }
+        .nav-links a:hover, .nav-links a.active-link { color: var(--primary-hover); }
+        .btn-nav-quote { background: var(--primary); color: var(--black) !important; padding: 0.5rem 1.2rem; border-radius: 4px; font-weight: 700; }
+        .btn-nav-quote:hover { background: var(--black); color: var(--primary) !important; }
+        
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--black); cursor: pointer; }
+
+        /* General Section Styling */
+        .section-padding { padding: 4rem 0; }
+        .section-title { text-align: center; font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; color: var(--black); }
+        .title-underline { width: 50px; height: 4px; background: var(--primary); margin: 0 auto 2.5rem; }
+
+        /* Buttons */
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+        .btn-primary { background: var(--primary); color: var(--black); border: none; padding: 0.8rem 2rem; border-radius: 4px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); display: inline-block; text-decoration: none; text-transform: uppercase; text-align: center; }
+        .btn-primary:hover { background: var(--white); color: var(--black); }
+        .btn-secondary { background: rgba(0,0,0,0.5); border: 2px solid var(--primary); color: var(--primary); padding: 0.8rem 2rem; border-radius: 4px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); display: inline-block; text-decoration: none; text-transform: uppercase; text-align: center; backdrop-filter: blur(5px); }
+        .btn-secondary:hover { background: var(--primary); color: var(--black); }
+
+        /* Home Hero */
+        .hero-slider { position: relative; width: 100%; height: 75vh; min-height: 500px; background-color: var(--black); }
+        .slide { width: 100%; height: 100%; background-size: cover; background-position: center; position: relative; }
+        .slide::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.65); z-index: 1; }
+        .slide-content { position: absolute; top: 50%; left: 5%; right: 5%; transform: translateY(-50%); z-index: 2; color: var(--white); text-align: center; }
+        .slide-content h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--primary); line-height: 1.1; }
+        .slide-content p { font-size: 1.1rem; margin-bottom: 1.5rem; max-width: 600px; margin-inline: auto; }
+
+        /* About Section */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .about-image img { width: 100%; border-radius: var(--radius-lg); object-fit: cover; aspect-ratio: 4/3; box-shadow: var(--card-shadow); }
+        .about-text h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; color: var(--black); line-height: 1.2; }
+        .about-text h2 span { color: var(--primary); }
+        .about-text p { margin-bottom: 1rem; color: var(--text-secondary); }
+
+        /* Packed Grids System */
+        .services-section, .quote-section { background: var(--bg-secondary); }
+        
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .service-card { background: var(--card-bg); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; box-shadow: var(--card-shadow); border: 1px solid var(--card-border); border-top: 3px solid var(--primary); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .service-card i { font-size: 2rem; color: var(--black); margin-bottom: 0.8rem; }
+        .service-card h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--black); text-transform: uppercase; }
+        .service-card p { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* City Grid (Locations) */
+        .city-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin-top: 2rem; }
+        .city-card { background: var(--card-bg); padding: 1rem; border-radius: var(--radius-md); text-align: center; box-shadow: var(--card-shadow); border: 1px solid var(--card-border); }
+        .city-card i { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; display: block; }
+        .city-card .city-name { font-weight: 700; font-size: 0.85rem; color: var(--black); text-transform: uppercase; }
+
+        /* Vehicles Grid (Replacing List) */
+        .vehicle-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .vehicle-item { background: var(--white); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--card-border); box-shadow: var(--card-shadow); text-align: center; border-bottom: 4px solid var(--primary); }
+        .vehicle-item h4 { font-size: 1.1rem; color: var(--black); margin-bottom: 0.5rem; text-transform: uppercase; }
+        .vehicle-item p { color: var(--text-secondary); font-size: 0.85rem; }
+        
+        /* Insurance Box */
+        .insurance-box { background: var(--black); color: var(--white); padding: 2rem; border-radius: var(--radius-lg); text-align: center; margin-top: 2rem; border: 2px solid var(--primary); }
+        .insurance-box h3 { color: var(--primary); font-size: 1.5rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .insurance-box p { font-size: 0.95rem; color: #E0E0E0; margin-bottom: 0.5rem; }
+
+        /* Quote Form */
+        .quote-container { background: var(--white); max-width: 600px; margin: 0 auto; padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--card-shadow); border-top: 4px solid var(--primary); }
+        .form-group { margin-bottom: 1rem; }
+        .form-control { width: 100%; padding: 0.8rem; border: 1px solid #CCC; border-radius: 4px; font-family: var(--font-main); font-size: 0.9rem; }
+        .form-control:focus { outline: none; border-color: var(--primary); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        .btn-submit { width: 100%; background: var(--black); color: var(--primary); border: none; padding: 1rem; font-size: 1rem; font-weight: 700; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: var(--transition); }
+        .btn-submit:hover { background: var(--primary); color: var(--black); }
+
+        /* FAQ */
+        .faq-block { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 0.8rem; }
+        .faq-item { background: var(--white); border-radius: var(--radius-md); border: 1px solid var(--card-border); box-shadow: var(--card-shadow); overflow: hidden; }
+        .faq-question { padding: 1.2rem; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--black); font-size: 0.95rem; }
+        .faq-answer { max-height: 0; padding: 0 1.2rem; overflow: hidden; transition: all 0.3s ease; color: var(--text-secondary); font-size: 0.9rem; }
+        .faq-item.active .faq-answer { max-height: 200px; padding-bottom: 1.2rem; }
+
+        /* Footer & Google Maps */
+        .footer { background: var(--black); color: var(--white); padding: 3rem 0 1rem; border-top: 5px solid var(--primary); margin-top: auto; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 2rem; margin-bottom: 2rem; }
+        .footer h4 { color: var(--primary); font-size: 1.1rem; margin-bottom: 1rem; text-transform: uppercase; }
+        .footer p, .footer li { color: #CCC; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .footer ul { list-style: none; }
+        .contact-list li { display: flex; align-items: center; gap: 10px; }
+        .contact-list i { color: var(--primary); }
+        .footer-map-container { width: 100%; border-radius: var(--radius-md); overflow: hidden; height: 100%; min-height: 150px; }
+        .copyright { text-align: center; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); color: #888; font-size: 0.8rem; }
+
+        /* Floating WA */
+        .float-wa { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: #25D366; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000; text-decoration: none; }
+
+        /* =========================================================
+           SMARTPHONE OPTIMIZATIONS (Grids & Fitting Screen)
+           ========================================================= */
+        @media (max-width: 900px) {
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .mobile-menu-btn { display: block; }
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); flex-direction: column; padding: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-bottom: 3px solid var(--primary); }
+            .nav-links.active { display: flex; }
+            
+            /* Tightly Packed Grids for Tablets/Large Phones */
+            .services-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+            .city-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .section-padding { padding: 2.5rem 0; }
+            .slide-content h1 { font-size: 2rem; }
+            .about-text h2 { font-size: 1.8rem; }
+            
+            /* Stack buttons on mobile */
+            .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin-inline: auto; gap: 0.5rem; }
+            
+            /* Squeeze into evenly packed squares for smartphones */
+            .services-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+            .service-card { padding: 1rem 0.5rem; }
+            .service-card i { font-size: 1.5rem; margin-bottom: 0.5rem; }
+            .service-card h3 { font-size: 0.85rem; }
+            .service-card p { display: none; }
+
+            .city-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+            .city-card { padding: 0.8rem 0.3rem; }
+            .city-card i { font-size: 1.2rem; }
+            .city-card .city-name { font-size: 0.75rem; }
+
+            .vehicle-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+            .vehicle-item { padding: 1rem 0.5rem; }
+            .vehicle-item h4 { font-size: 0.9rem; }
+            
+            .quote-container { padding: 1.5rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="main-nav">
+        <div class="container nav-container">
+            <a onclick="navigateSPA('home')" class="logo-area">
+                <img class="logo-img" src="WhatsApp Image 2026-06-29 at 17.41.11_upscaled (1).png" alt="Mpila Legacy Logistics">
+                <div class="logo-text">Mpila Legacy<span class="highlight">Logistics</span></div>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+            <div class="nav-links" id="navLinks">
+                <a onclick="navigateSPA('home')">Home</a>
+                <a onclick="navigateSPA('about')">About Us</a>
+                <a onclick="navigateSPA('services')">Services</a>
+                <a onclick="navigateSPA('vehicles')">Fleet</a>
+                <a onclick="navigateSPA('faq')">FAQ</a>
+                <a onclick="navigateSPA('quote')" class="btn-nav-quote">Get Quote</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- PAGE: HOME -->
+    <section id="home" class="page-section active-page">
+        <div class="hero-slider">
+            <div class="slide" style="background-image: url('https://images.pexels.com/photos/7464674/pexels-photo-7464674.jpeg?auto=compress&cs=tinysrgb&w=1600');">
+                <div class="slide-content">
+                    <h1>Expert Removal Services</h1>
+                    <p>Professional logistics, secure transit, and reliable removals nationwide.</p>
+                    <div class="hero-buttons">
+                        <a onclick="navigateSPA('quote')" class="btn-primary">Request a Quote</a>
+                        <a onclick="navigateSPA('services')" class="btn-secondary">View Our Services</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: ABOUT -->
+    <section id="about" class="page-section section-padding">
+        <div class="container about-grid">
+            <div class="about-image">
+                <img src="WhatsApp Image 2026-06-30 at 01.33.47.JPEG" alt="Mpila Legacy Logistics Team">
+            </div>
+            <div class="about-text">
+                <h2>Welcome to <br><span>Mpila Legacy Logistics</span></h2>
+                <p>At Mpila Legacy Logistics, we redefine the moving experience. Whether you are transitioning to a new home, moving your corporate office, or seeking dependable storage solutions, our dedicated team of professionals guarantees excellence at every turn.</p>
+                <p>We pride ourselves on punctuality, safety, and customer satisfaction, covering both short and long distances nationwide.</p>
+                <br>
+                <a onclick="navigateSPA('quote')" class="btn-primary">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: SERVICES -->
+    <section id="services" class="page-section section-padding services-section">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="title-underline"></div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-truck-loading"></i>
+                    <h3>Removals</h3>
+                    <p>Maximum care transit</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-home"></i>
+                    <h3>Residential</h3>
+                    <p>Stress-free home moves</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-building"></i>
+                    <h3>Office</h3>
+                    <p>Corporate relocations</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-route"></i>
+                    <h3>Long Distance</h3>
+                    <p>Nationwide coverage</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-warehouse"></i>
+                    <h3>Storage</h3>
+                    <p>Secure facilities</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-truck-pickup"></i>
+                    <h3>Towing</h3>
+                    <p>Small vehicle towing</p>
+                </div>
+            </div>
+
+            <h3 style="text-align: center; margin: 3rem 0 1rem; color: var(--black); text-transform: uppercase;">Service Areas</h3>
+            <div class="city-grid">
+                <div class="city-card"><i class="fas fa-city"></i><div class="city-name">JHB</div></div>
+                <div class="city-card"><i class="fas fa-umbrella-beach"></i><div class="city-name">DBN</div></div>
+                <div class="city-card"><i class="fas fa-mountain"></i><div class="city-name">CPT</div></div>
+                <div class="city-card"><i class="fas fa-tree"></i><div class="city-name">PLK</div></div>
+                <div class="city-card"><i class="fas fa-ship"></i><div class="city-name">EL</div></div>
+                <div class="city-card"><i class="fas fa-sun"></i><div class="city-name">BFN</div></div>
+                <div class="city-card"><i class="fas fa-leaf"></i><div class="city-name">GRG</div></div>
+                <div class="city-card"><i class="fas fa-map-pin"></i><div class="city-name">PTA</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: VEHICLES & FLEET -->
+    <section id="vehicles" class="page-section section-padding">
+        <div class="container">
+            <h2 class="section-title">Fleet & Insurance</h2>
+            <div class="title-underline"></div>
+            
+            <div class="vehicle-grid">
+                <div class="vehicle-item">
+                    <h4>1 Ton Bakkie</h4>
+                    <p>Double bed, fridge, washing machine & smalls.</p>
+                </div>
+                <div class="vehicle-item">
+                    <h4>1.5 Ton Bakkie</h4>
+                    <p>Double bed, sofas, fridge, washing machine.</p>
+                </div>
+                <div class="vehicle-item">
+                    <h4>3 Ton Truck</h4>
+                    <p>Average 2 bedroom home contents.</p>
+                </div>
+                <div class="vehicle-item">
+                    <h4>8 Ton Truck</h4>
+                    <p>Full 3 bedroom home contents.</p>
+                </div>
+            </div>
+
+            <div class="insurance-box">
+                <h3>Goods In Transit (GIT) Insurance</h3>
+                <p><strong>Protecting your valuable cargo.</strong></p>
+                <p>We mitigate risks associated with transport. Whether short or long distance, our coverage protects your goods from damage, loss, or theft.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: FAQ -->
+    <section id="faq" class="page-section section-padding">
+        <div class="container">
+            <h2 class="section-title">FAQ</h2>
+            <div class="title-underline"></div>
+            
+            <div class="faq-block">
+                <div class="faq-item">
+                    <div class="faq-question">How do I book? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p><br>Fill out the Get Quote form or WhatsApp 0734053920.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What vehicles are available? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p><br>1 Ton, 1.5 Ton, 3 Ton, and 8 Ton vehicles depending on inventory.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Are storage facilities secure? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p><br>Yes, they are highly secure, clean, and monitored 24/7.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: QUOTE/CONTACT -->
+    <section id="quote" class="page-section section-padding quote-section">
+        <div class="container">
+            <h2 class="section-title">Request a Quote</h2>
+            <div class="title-underline"></div>
+            
+            <div class="quote-container">
+                <form id="contact-form">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" required placeholder="Full Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="phone" class="form-control" required placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <select name="service_type" class="form-control" required>
+                            <option value="">Select Service</option>
+                            <option value="Residential Move">Residential Move</option>
+                            <option value="Office Relocation">Office Relocation</option>
+                            <option value="Storage">Storage Facilities</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" class="form-control" required placeholder="Pickup/Drop-off cities & inventory details..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Submit Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Persistent Footer with Google Maps -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>Mpila Legacy</h4>
+                    <p>Safe transit & reliable logistics nationwide.</p>
+                    <br>
+                    <ul class="contact-list">
+                        <li><i class="fas fa-phone-alt"></i> 0734053920</li>
+                        <li><i class="fas fa-envelope"></i> info@mpilalegacylogistics.co.za</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 47 Conway Road, East London</li>
+                    </ul>
+                </div>
+                
+                <!-- Google Maps Embed -->
+                <div>
+                    <div class="footer-map-container">
+                        <iframe width="100%" height="100%" style="border:0; min-height: 180px;" loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=47%20Conway%20Road,%20East%20London,%205201&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                </div>
+
+            </div>
+            <div class="copyright">&copy; 2026 Mpila Legacy Logistics.</div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/27734053920" target="_blank" class="float-wa">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        // --- SPA Navigation Logic ---
+        function navigateSPA(pageId) {
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            document.getElementById(pageId).classList.add('active-page');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if(window.innerWidth <= 768) {
+                document.getElementById('navLinks').classList.remove('active');
+            }
+        }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+                const icon = question.querySelector('i');
+                if (item.classList.contains('active')) {
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                } else {
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+
+        // FUSED EMAIL + WHATSAPP FORM SUBMIT
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const btn = this.querySelector('.btn-submit');
+            const originalText = btn.innerText;
+            btn.innerText = 'Sending...';
+
+            // Extract the user's data to build the WhatsApp text
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const phone = formData.get('phone');
+            const service = formData.get('service_type');
+            const message = formData.get('message');
+
+            // Format the message nicely for WhatsApp
+            const waText = `*New Quote Request*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Service:* ${service}\n*Details:* ${message}`;
+            
+            // Encode it into a clickable URL format
+            const waUrl = `https://wa.me/27734053920?text=${encodeURIComponent(waText)}`;
+
+            // Send via EmailJS first
+            emailjs.sendForm('service_6p4tofv', 'YOUR_TEMPLATE_ID', this)
+                .then(() => {
+                    alert('Quote request submitted! You will now be redirected to WhatsApp to confirm.');
+                    // Open WhatsApp in a new tab
+                    window.open(waUrl, '_blank');
+                    this.reset();
+                    btn.innerText = originalText;
+                }, (error) => {
+                    console.error('FAILED...', error);
+                    alert('We had trouble sending the email, but you will be redirected to WhatsApp to send your request directly!');
+                    // Even if EmailJS fails, still redirect them to WhatsApp so you don't lose the lead
+                    window.open(waUrl, '_blank');
+                    btn.innerText = originalText;
+                });
+        });
+    </script>
+</body>
+</html>
