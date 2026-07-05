@@ -13,17 +13,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            // REPLACE "YOUR_PUBLIC_KEY" WITH YOUR ACTUAL PUBLIC KEY FROM EMAILJS
-            emailjs.init({
-              publicKey: "YOUR_PUBLIC_KEY", 
-            });
-        })();
-    </script>
-
     <style>
         * {
             margin: 0;
@@ -146,7 +135,7 @@
         .city-card i { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; display: block; }
         .city-card .city-name { font-weight: 700; font-size: 0.85rem; color: var(--black); text-transform: uppercase; }
 
-        /* Vehicles Grid (Replacing List) */
+        /* Vehicles Grid */
         .vehicle-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         .vehicle-item { background: var(--white); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--card-border); box-shadow: var(--card-shadow); text-align: center; border-bottom: 4px solid var(--primary); }
         .vehicle-item h4 { font-size: 1.1rem; color: var(--black); margin-bottom: 0.5rem; text-transform: uppercase; }
@@ -200,7 +189,6 @@
             .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); flex-direction: column; padding: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-bottom: 3px solid var(--primary); }
             .nav-links.active { display: flex; }
             
-            /* Tightly Packed Grids for Tablets/Large Phones */
             .services-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
             .city-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -211,10 +199,8 @@
             .slide-content h1 { font-size: 2rem; }
             .about-text h2 { font-size: 1.8rem; }
             
-            /* Stack buttons on mobile */
             .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin-inline: auto; gap: 0.5rem; }
             
-            /* Squeeze into evenly packed squares for smartphones */
             .services-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
             .service-card { padding: 1rem 0.5rem; }
             .service-card i { font-size: 1.5rem; margin-bottom: 0.5rem; }
@@ -396,7 +382,7 @@
         </div>
     </section>
 
-    <!-- PAGE: QUOTE/CONTACT -->
+    <!-- PAGE: QUOTE/CONTACT (UPDATED FOR WEB3FORMS) -->
     <section id="quote" class="page-section section-padding quote-section">
         <div class="container">
             <h2 class="section-title">Request a Quote</h2>
@@ -404,14 +390,17 @@
             
             <div class="quote-container">
                 <form id="contact-form">
+                    <!-- Web3Forms Access Key -->
+                    <input type="hidden" name="access_key" value="978fe415-d32e-4d18-80c6-719eaa19d1c2">
+                    
                     <div class="form-group">
                         <input type="text" name="name" class="form-control" required placeholder="Full Name">
                     </div>
                     <div class="form-group">
-                        <input type="tel" name="phone" class="form-control" required placeholder="Phone Number">
+                        <input type="email" name="email" class="form-control" required placeholder="Email Address">
                     </div>
                     <div class="form-group">
-                        <select name="service_type" class="form-control" required>
+                        <select name="service" class="form-control" required>
                             <option value="">Select Service</option>
                             <option value="Residential Move">Residential Move</option>
                             <option value="Office Relocation">Office Relocation</option>
@@ -419,7 +408,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <textarea name="message" class="form-control" required placeholder="Pickup/Drop-off cities & inventory details..."></textarea>
+                        <input type="text" name="location" class="form-control" required placeholder="Pickup & Drop-off Locations">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" class="form-control" required placeholder="Additional inventory details or message..."></textarea>
                     </div>
                     <button type="submit" class="btn-submit">Submit Request</button>
                 </form>
@@ -442,7 +434,6 @@
                     </ul>
                 </div>
                 
-                <!-- Google Maps Embed -->
                 <div>
                     <div class="footer-map-container">
                         <iframe width="100%" height="100%" style="border:0; min-height: 180px;" loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=47%20Conway%20Road,%20East%20London,%205201&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
@@ -460,8 +451,8 @@
 
     <!-- Scripts -->
     <script>
-        // --- SPA Navigation Logic ---
-        function navigateSPA(pageId) {
+        // --- SPA Navigation & Memory (History API) ---
+        function navigateSPA(pageId, pushState = true) {
             document.querySelectorAll('.page-section').forEach(page => {
                 page.classList.remove('active-page');
             });
@@ -471,7 +462,32 @@
             if(window.innerWidth <= 768) {
                 document.getElementById('navLinks').classList.remove('active');
             }
+
+            // Save the page to the browser's history so the back button works
+            if (pushState) {
+                history.pushState({ page: pageId }, "", "#" + pageId);
+            }
         }
+
+        // Listen for the user pressing the browser's Back button
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.page) {
+                navigateSPA(event.state.page, false);
+            } else {
+                navigateSPA('home', false);
+            }
+        });
+
+        // Load correct page on refresh or direct link
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '') || 'home';
+            if(document.getElementById(hash)) {
+                navigateSPA(hash, false);
+                history.replaceState({ page: hash }, "", "#" + hash);
+            } else {
+                history.replaceState({ page: 'home' }, "", "#home");
+            }
+        });
 
         // Mobile Menu Toggle
         document.getElementById('mobileMenuBtn').addEventListener('click', () => {
@@ -492,41 +508,46 @@
             });
         });
 
-        // FUSED EMAIL + WHATSAPP FORM SUBMIT
+        // FUSED EMAIL (WEB3FORMS) + WHATSAPP FORM SUBMIT
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault(); 
             const btn = this.querySelector('.btn-submit');
             const originalText = btn.innerText;
             btn.innerText = 'Sending...';
 
-            // Extract the user's data to build the WhatsApp text
             const formData = new FormData(this);
             const name = formData.get('name');
-            const phone = formData.get('phone');
-            const service = formData.get('service_type');
+            const email = formData.get('email');
+            const service = formData.get('service');
+            const location = formData.get('location');
             const message = formData.get('message');
 
-            // Format the message nicely for WhatsApp
-            const waText = `*New Quote Request*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Service:* ${service}\n*Details:* ${message}`;
-            
-            // Encode it into a clickable URL format
+            const waText = `*New Quote Request*\n\n*Name:* ${name}\n*Email:* ${email}\n*Service:* ${service}\n*Location:* ${location}\n*Details:* ${message}`;
             const waUrl = `https://wa.me/27734053920?text=${encodeURIComponent(waText)}`;
 
-            // Send via EmailJS first
-            emailjs.sendForm('service_6p4tofv', 'YOUR_TEMPLATE_ID', this)
-                .then(() => {
-                    alert('Quote request submitted! You will now be redirected to WhatsApp to confirm.');
-                    // Open WhatsApp in a new tab
-                    window.open(waUrl, '_blank');
-                    this.reset();
-                    btn.innerText = originalText;
-                }, (error) => {
-                    console.error('FAILED...', error);
-                    alert('We had trouble sending the email, but you will be redirected to WhatsApp to send your request directly!');
-                    // Even if EmailJS fails, still redirect them to WhatsApp so you don't lose the lead
-                    window.open(waUrl, '_blank');
-                    btn.innerText = originalText;
-                });
+            // 1. Send via Web3Forms silently in the background
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    alert('Quote request submitted successfully! You will now be redirected to WhatsApp to confirm.');
+                } else {
+                    alert('Redirecting you to WhatsApp to send your request directly!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Redirecting you to WhatsApp to send your request directly!');
+            })
+            .finally(() => {
+                // 2. Open WhatsApp immediately after
+                window.open(waUrl, '_blank');
+                this.reset();
+                btn.innerText = originalText;
+            });
         });
     </script>
 </body>
