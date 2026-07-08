@@ -57,12 +57,12 @@
 
         /* SPA Page Logic */
         .page-section {
-            display: none; /* Hide all sections by default */
+            display: none; 
             animation: fadeIn 0.4s ease-in-out;
             flex-grow: 1;
         }
         .page-section.active-page {
-            display: block; /* Only show active page */
+            display: block; 
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
@@ -99,19 +99,75 @@
         .title-underline { width: 50px; height: 4px; background: var(--primary); margin: 0 auto 2.5rem; }
 
         /* Buttons */
-        .hero-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
-        .btn-primary { background: var(--primary); color: var(--black); border: none; padding: 0.8rem 2rem; border-radius: 4px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); display: inline-block; text-decoration: none; text-transform: uppercase; text-align: center; }
-        .btn-primary:hover { background: var(--white); color: var(--black); }
-        .btn-secondary { background: rgba(0,0,0,0.5); border: 2px solid var(--primary); color: var(--primary); padding: 0.8rem 2rem; border-radius: 4px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition); display: inline-block; text-decoration: none; text-transform: uppercase; text-align: center; backdrop-filter: blur(5px); }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
+        .btn-primary { background: var(--primary); color: var(--black); border: none; padding: 1rem 2.5rem; border-radius: 4px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: var(--transition); display: inline-block; text-decoration: none; text-transform: uppercase; text-align: center; }
+        .btn-primary:hover { background: var(--white); color: var(--black); box-shadow: 0 4px 15px rgba(255,204,0,0.4); }
+        
+        .btn-secondary { background: transparent; border: 2px solid var(--primary); color: var(--white); padding: 1rem 2.5rem; border-radius: 4px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: var(--transition); display: inline-block; text-decoration: none; text-transform: uppercase; text-align: center; }
         .btn-secondary:hover { background: var(--primary); color: var(--black); }
 
-        /* Home Hero */
-        .hero-slider { position: relative; width: 100%; height: 75vh; min-height: 500px; background-color: var(--black); }
+        /* Home Hero (Restored) */
+        .hero-slider { position: relative; width: 100%; height: 60vh; min-height: 400px; background-color: var(--black); }
         .slide { width: 100%; height: 100%; background-size: cover; background-position: center; position: relative; }
-        .slide::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.65); z-index: 1; }
+        .slide::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 1; }
         .slide-content { position: absolute; top: 50%; left: 5%; right: 5%; transform: translateY(-50%); z-index: 2; color: var(--white); text-align: center; }
-        .slide-content h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--primary); line-height: 1.1; }
-        .slide-content p { font-size: 1.1rem; margin-bottom: 1.5rem; max-width: 600px; margin-inline: auto; }
+        .slide-content h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; color: var(--primary); line-height: 1.1; text-transform: uppercase; letter-spacing: -1px; }
+        .slide-content p { font-size: 1.2rem; margin-bottom: 1.5rem; max-width: 700px; margin-inline: auto; color: #E0E0E0; }
+
+        /* Modern Poster Scrolling Section */
+        .posters-section {
+            background: var(--dark-gray); /* Dark background makes the posters pop */
+            padding: 5rem 0;
+            border-top: 5px solid var(--primary);
+        }
+        
+        .poster-carousel-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 1rem 0;
+        }
+
+        .poster-carousel {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 2rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--dark-gray);
+        }
+
+        .poster-carousel::-webkit-scrollbar {
+            height: 8px;
+        }
+        .poster-carousel::-webkit-scrollbar-track {
+            background: var(--dark-gray);
+            border-radius: 4px;
+        }
+        .poster-carousel::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 4px;
+        }
+
+        .poster-item {
+            flex: 0 0 auto;
+            width: 80%;
+            max-width: 450px;
+            scroll-snap-align: center;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            object-fit: contain;
+            background: var(--black);
+        }
+
+        .poster-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 204, 0, 0.15);
+            border-color: rgba(255, 204, 0, 0.3);
+        }
 
         /* About Section */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
@@ -184,6 +240,7 @@
         }
 
         @media (max-width: 768px) {
+            .slide-content h1 { font-size: 2.5rem; }
             .about-grid { grid-template-columns: 1fr; gap: 1.5rem; }
             .mobile-menu-btn { display: block; }
             .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); flex-direction: column; padding: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-bottom: 3px solid var(--primary); }
@@ -192,14 +249,14 @@
             .services-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
             .city-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            
+            .poster-item { width: 90%; }
         }
 
         @media (max-width: 480px) {
             .section-padding { padding: 2.5rem 0; }
             .slide-content h1 { font-size: 2rem; }
             .about-text h2 { font-size: 1.8rem; }
-            
-            .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin-inline: auto; gap: 0.5rem; }
             
             .services-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
             .service-card { padding: 1rem 0.5rem; }
@@ -217,12 +274,14 @@
             .vehicle-item h4 { font-size: 0.9rem; }
             
             .quote-container { padding: 1.5rem 1rem; }
+            
+            .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; gap: 1rem; }
+            .btn-primary, .btn-secondary { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
     <header class="main-nav">
         <div class="container nav-container">
             <a onclick="navigateSPA('home')" class="logo-area">
@@ -241,23 +300,41 @@
         </div>
     </header>
 
-    <!-- PAGE: HOME -->
     <section id="home" class="page-section active-page">
+        
         <div class="hero-slider">
             <div class="slide" style="background-image: url('https://images.pexels.com/photos/7464674/pexels-photo-7464674.jpeg?auto=compress&cs=tinysrgb&w=1600');">
                 <div class="slide-content">
                     <h1>Expert Removal Services</h1>
                     <p>Professional logistics, secure transit, and reliable removals nationwide.</p>
-                    <div class="hero-buttons">
-                        <a onclick="navigateSPA('quote')" class="btn-primary">Request a Quote</a>
-                        <a onclick="navigateSPA('services')" class="btn-secondary">View Our Services</a>
-                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="posters-section">
+            <div class="container">
+                <h2 class="section-title" style="color: var(--white);">Current Promotions</h2>
+                <div class="title-underline"></div>
+                
+                <div class="poster-carousel-container">
+                    <div class="poster-carousel">
+                        <img src="WhatsApp Image 2026-07-08 at 11.57.39.jpeg" alt="Removal Services Promotion" class="poster-item">
+                        <img src="WhatsApp Image 2026-07-06 at 09.11.54 (1).jpeg" alt="Office Moves Promotion" class="poster-item">
+                        <img src="WhatsApp Image 2026-07-06 at 09.11.54 (2).jpeg" alt="Storage Solutions Promotion" class="poster-item">
+                        <img src="WhatsApp Image 2026-07-06 at 09.11.54.jpeg" alt="Long Distance Promotion" class="poster-item">
+                        <img src="WhatsApp Image 2026-07-08 at 11.44.45.jpeg" alt="Car Breakdown Towing Promotion" class="poster-item">
+                    </div>
+                </div>
+
+                <div class="hero-buttons">
+                    <a onclick="navigateSPA('services')" class="btn-primary">Our Services</a>
+                    <a onclick="navigateSPA('quote')" class="btn-secondary">Get a Quote</a>
+                </div>
+            </div>
+        </div>
+
     </section>
 
-    <!-- PAGE: ABOUT -->
     <section id="about" class="page-section section-padding">
         <div class="container about-grid">
             <div class="about-image">
@@ -273,7 +350,6 @@
         </div>
     </section>
 
-    <!-- PAGE: SERVICES -->
     <section id="services" class="page-section section-padding services-section">
         <div class="container">
             <h2 class="section-title">Our Services</h2>
@@ -326,7 +402,6 @@
         </div>
     </section>
 
-    <!-- PAGE: VEHICLES & FLEET -->
     <section id="vehicles" class="page-section section-padding">
         <div class="container">
             <h2 class="section-title">Fleet & Insurance</h2>
@@ -359,7 +434,6 @@
         </div>
     </section>
 
-    <!-- PAGE: FAQ -->
     <section id="faq" class="page-section section-padding">
         <div class="container">
             <h2 class="section-title">FAQ</h2>
@@ -382,7 +456,6 @@
         </div>
     </section>
 
-    <!-- PAGE: QUOTE/CONTACT (UPDATED FOR WEB3FORMS) -->
     <section id="quote" class="page-section section-padding quote-section">
         <div class="container">
             <h2 class="section-title">Request a Quote</h2>
@@ -390,7 +463,6 @@
             
             <div class="quote-container">
                 <form id="contact-form">
-                    <!-- Web3Forms Access Key -->
                     <input type="hidden" name="access_key" value="978fe415-d32e-4d18-80c6-719eaa19d1c2">
                     
                     <div class="form-group">
@@ -419,7 +491,6 @@
         </div>
     </section>
 
-    <!-- Persistent Footer with Google Maps -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -441,7 +512,7 @@
                 </div>
 
             </div>
-            <div class="copyright">&copy; 2026 Mpila Legacy Logistics.</div>
+            <div class="copyright">© 2026 Mpila Legacy Logistics.</div>
         </div>
     </footer>
 
@@ -449,7 +520,6 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Scripts -->
     <script>
         // --- SPA Navigation & Memory (History API) ---
         function navigateSPA(pageId, pushState = true) {
@@ -463,13 +533,11 @@
                 document.getElementById('navLinks').classList.remove('active');
             }
 
-            // Save the page to the browser's history so the back button works
             if (pushState) {
                 history.pushState({ page: pageId }, "", "#" + pageId);
             }
         }
 
-        // Listen for the user pressing the browser's Back button
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.page) {
                 navigateSPA(event.state.page, false);
@@ -478,7 +546,6 @@
             }
         });
 
-        // Load correct page on refresh or direct link
         window.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash.replace('#', '') || 'home';
             if(document.getElementById(hash)) {
@@ -525,7 +592,6 @@
             const waText = `*New Quote Request*\n\n*Name:* ${name}\n*Email:* ${email}\n*Service:* ${service}\n*Location:* ${location}\n*Details:* ${message}`;
             const waUrl = `https://wa.me/27734053920?text=${encodeURIComponent(waText)}`;
 
-            // 1. Send via Web3Forms silently in the background
             fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 body: formData
@@ -543,7 +609,6 @@
                 alert('Redirecting you to WhatsApp to send your request directly!');
             })
             .finally(() => {
-                // 2. Open WhatsApp immediately after
                 window.open(waUrl, '_blank');
                 this.reset();
                 btn.innerText = originalText;
